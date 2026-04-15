@@ -8,6 +8,7 @@ dist/
 .next/
 out/
 build/
+*.tsbuildinfo
 
 # Environment files — never commit these
 .env
@@ -32,6 +33,4 @@ Thumbs.db
 *.swp
 *.swo
 
-# Prisma migrations lock (keep migrations/ folder but not shadow db)
-backend/prisma/migrations/migration_lock.toml
 

@@ -75,14 +75,6 @@ router.patch("/state", async (req, res) => {
     data,
   });
 
-  await prisma.auditLog.create({
-    data: {
-      actorId: req.user!.userId,
-      action: "display.state.update",
-      metadata: { updatedFields: data },
-    },
-  });
-
   pushScene("LAYOUT_UPDATE", updatedDisplayState);
   return res.json(updatedDisplayState);
 });
@@ -102,14 +94,6 @@ router.post("/override", async (req, res) => {
     data: { activeOverride: scene, overridePayload: payload },
   });
 
-  await prisma.auditLog.create({
-    data: {
-      actorId: req.user!.userId,
-      action: "display.override",
-      metadata: { scene, payload },
-    },
-  });
-
   pushScene(scene, payload);
   return res.status(200).json(updatedDisplayState);
 });
@@ -125,13 +109,6 @@ router.delete("/override", async (req, res) => {
     data: { activeOverride: null, overridePayload: Prisma.DbNull },
   });
 
-  await prisma.auditLog.create({
-    data: {
-      actorId: req.user!.userId,
-      action: "display.override.clear",
-    },
-  });
-
   pushScene("OVERRIDE_CLEAR");
   return res.status(200).json(updatedDisplayState);
 });
@@ -145,14 +122,6 @@ router.post("/freeze", async (req, res) => {
   const updatedDisplayState = await prisma.displayState.update({
     where: { id: displayState.id },
     data: { frozen: !displayState.frozen },
-  });
-
-  await prisma.auditLog.create({
-    data: {
-      actorId: req.user!.userId,
-      action: "display.freeze.toggle",
-      metadata: { frozen: !displayState.frozen },
-    },
   });
 
   pushFreeze(!displayState.frozen);

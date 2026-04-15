@@ -12,18 +12,6 @@ enum UserRole {
   OPERATOR
 }
 
-enum UpdateJobStatus {
-  ACTIVE
-  PAUSED
-  ERROR
-}
-
-enum UpdateRunStatus {
-  RUNNING
-  SUCCESS
-  FAILED
-}
-
 enum SceneType {
   TOTAL
   DONATIONS
@@ -57,7 +45,6 @@ model User {
   role         UserRole   @default(OPERATOR)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
-  auditLogs    AuditLog[]
 }
 
 model EventPasscode {
@@ -89,69 +76,3 @@ model DisplayState {
   updatedAt             DateTime         @updatedAt
 }
 
-model UpdateJob {
-  id           String         @id @default(cuid())
-  label        String
-  campaignId   String
-  sheetUrl     String
-  tabName      String         @default("Sheet1")
-  intervalSec  Int            @default(300)
-  status       UpdateJobStatus  @default(PAUSED)
-  pausedAt     DateTime?
-  lastRunAt    DateTime?
-  nextRunAt    DateTime?
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  fieldMappings UpdateFieldMapping[]
-  checkpoint   UpdateCheckpoint?
-  runs         UpdateRun[]
-}
-
-model UpdateFieldMapping {
-  id            String  @id @default(cuid())
-  updateJobId   String
-  updateJob       UpdateJob @relation(fields: [updateJobId], references: [id], onDelete: Cascade)
-  sourceField   String
-  targetColumn  String
-  transformRule String?
-}
-
-model UpdateCheckpoint {
-  id        String   @id @default(cuid())
-  updateJobId String   @unique
-  updateJob   UpdateJob  @relation(fields: [updateJobId], references: [id], onDelete: Cascade)
-  watermark String
-  updatedAt DateTime @updatedAt
-}
-
-model UpdateRun {
-  id             String        @id @default(cuid())
-  updateJobId      String
-  updateJob        UpdateJob       @relation(fields: [updateJobId], references: [id], onDelete: Cascade)
-  startedAt      DateTime      @default(now())
-  finishedAt     DateTime?
-  status         UpdateRunStatus @default(RUNNING)
-  processedCount Int           @default(0)
-  errorSummary   String?
-}
-
-model AuditLog {
-  id          String   @id @default(cuid())
-  actorId     String?
-  actor       User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
-  action      String
-  entityType  String?
-  entityId    String?
-  metadata    Json?
-  createdAt   DateTime @default(now())
-}
-
-model PerformanceMetric {
-  id          String   @id @default(cuid())
-  metricName  String
-  value       Float
-  unit        String?
-  recordedAt  DateTime @default(now())
-
-  @@index([metricName, recordedAt])
-}

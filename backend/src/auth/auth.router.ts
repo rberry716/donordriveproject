@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { prisma } from "../db/prisma";
 import { loginUser, refreshToken as refreshUserTokens, verifyCode } from "./auth.service";
 import { requireAuth } from "./auth.middleware";
 
@@ -14,12 +13,6 @@ router.post("/login", async (req, res) => {
     if (!result) {
         return res.status(401).json({ error: "Invalid credentials" });
     }
-    await prisma.auditLog.create({
-        data: {
-            actorId: result.user.id,
-            action: "auth.login",
-        },
-    });
     return res.json(result);
 });
 

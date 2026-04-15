@@ -637,7 +637,7 @@ function BarConfigPanel({
                         {hasBar ? "Active on current layout" : "Stored for bar layouts"}
                     </span>
                     <span className="text-sm" style={{ color: PALETTE.muted }}>
-                        These times save on today's date and stay ready whenever a bar layout is sent.
+                        These times save on today&apos;s date and stay ready whenever a bar layout is sent.
                     </span>
                 </div>
             </div>

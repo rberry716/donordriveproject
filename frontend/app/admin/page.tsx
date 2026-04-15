@@ -109,7 +109,7 @@ export default function AdminLoginPage() {
                     </p>
                 ) : (
                     <p className="auth-shell__helper">
-                        This opens the admin board for today's display.
+                        This opens the admin board for today&apos;s display.
                     </p>
                 )}
 
