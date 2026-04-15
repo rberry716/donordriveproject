@@ -4,7 +4,7 @@ A real-time event display platform for CMN Dance Marathon fundraising events. An
 
 ## Demo
 
-https://github.com/user-attachments/assets/20260415-1637-20.3134871.mp4
+https://github.com/user-attachments/assets/b350fabf-4d31-4f82-aa26-2a695c950894
 
 ## Architecture
 
